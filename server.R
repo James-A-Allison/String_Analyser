@@ -45,8 +45,7 @@ shinyServer(function(input, output) {
         # } else {
             # strings_in <- new_strings()$data
         # }
-        data <- values$string %>%
-            StrHclust(., input$clusters) %>%
+        data <- StrHclust(values$string, input$clusters) %>%
             rename(Question = Cluster,
                    `Column names` = Strings) %>%
             select(`Column names`, Question) %>%
