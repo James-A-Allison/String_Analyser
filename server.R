@@ -45,10 +45,13 @@ shinyServer(function(input, output) {
         # } else {
             # strings_in <- new_strings()$data
         # }
-        data <- StrHclust(values$string, input$clusters) %>%
-            rename(Question = Cluster,
-                   `Column names` = Strings) %>%
-            select(`Column names`, Question) %>%
+        
+        d <- utils::adist(values$string)
+        c <- stats::hclust(stats::as.dist(d))
+        cluster <- stats::cutree(c, input$clusters)
+        
+        data <- tibble(Strings = values$string,
+                       Question = cluster) %>%
             mutate(Question = as.factor(Question))
         output$data <- data
         return(output)
